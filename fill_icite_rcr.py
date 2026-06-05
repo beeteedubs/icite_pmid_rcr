@@ -66,9 +66,13 @@ def fetch_rcr_cache(pmids: set[str], session: requests.Session) -> dict[str, flo
 
 
 def compute_metrics(pmids: list[str], cache: dict[str, float]) -> tuple[float, float]:
-    rcrs = [cache.get(p, 0.0) for p in pmids]
-    weighted = round(sum(rcrs), 2)
-    mean = round(weighted / len(pmids), 2)
+    # iCite only averages over PMIDs that have RCR data; missing PMIDs are excluded
+    # from the mean denominator (but contribute nothing to weighted RCR either).
+    rcrs_with_data = [cache[p] for p in pmids if p in cache]
+    if not rcrs_with_data:
+        return 0.0, 0.0
+    weighted = round(sum(rcrs_with_data), 2)
+    mean = round(weighted / len(rcrs_with_data), 2)
     return mean, weighted
 
 

@@ -2,6 +2,9 @@
 
 This folder updates **Mean RCR** (column M) and **Weighted RCR** (column N) using PMIDs in column E, via the NIH iCite API.
 
+- **Weighted RCR** = sum of RCR values for PMIDs that iCite has data for.
+- **Mean RCR** = weighted RCR ÷ count of those PMIDs (PMIDs with no iCite RCR are excluded from the average, matching the iCite website).
+
 ## What you need
 
 - A Mac
